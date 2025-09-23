@@ -30,9 +30,9 @@ fi
 if [ ! -e "$ROOTFS_DIR/.installed" ]; then
 echo "#######################################################################################"
 echo "#"
-echo "#                                    > ApexCloud VPS <"
+echo "#                                    > Nekopoi <"
 echo "#"
-echo "#                           Copyright (C) 2022 - 2100, YourCloud"
+echo "#                           Copyright (C) 2022 - 2100, BringLive"
 echo "#"
 echo "#"
 echo "#######################################################################################"
@@ -41,8 +41,11 @@ echo "##########################################################################
   echo "* [0] Debian"
   echo "* [1] Ubuntu"
   echo "* [2] Alpine"
+  echo "* [3] Fedora"
+  echo "* [4] Rocky"
+  echo "* [5] OpenSuse"
 
-  read -p "Enter OS (0-2): " input
+  read -p "Enter OS (0-5): " input
 
   case $input in
 
@@ -57,11 +60,11 @@ echo "##########################################################################
       mkdir $ROOTFS_DIR/home/container/ -p
 
       wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/private.sh"
+      "https://github.com/bringlive/VPS-Pterodactyl/main/private.sh"
       wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/.bashrc"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
       wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/style.sh"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
       ;;
 
     1)
@@ -71,11 +74,11 @@ echo "##########################################################################
       mkdir $ROOTFS_DIR/home/container/ -p
 
       wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/private.sh"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
       wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/.bashrc"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
       wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/style.sh"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
       ;;
 
     2)
@@ -85,11 +88,53 @@ echo "##########################################################################
       mkdir $ROOTFS_DIR/etc/profile.d/ -p
       
       wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/private.sh"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
       wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/.bashrc"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
       wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/abdalla435/VPS-Pterodactyl-EGG/raw/main/style.sh"
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      ;;
+
+    3)
+      wget --no-hsts -O /tmp/rootfs.tar.gz \
+      "https://github.com/termux/proot-distro/releases/download/v4.27.0/fedora-${ARCH}-pd-v4.27.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      mkdir $ROOTFS_DIR/etc/profile.d/ -p
+      
+      wget -O $ROOTFS_DIR/home/container/installer.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
+      wget -O $ROOTFS_DIR/home/container/.bashrc \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
+      wget -O $ROOTFS_DIR/home/container/style.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      ;;
+
+    4)
+      wget --no-hsts -O /tmp/rootfs.tar.gz \
+      "https://github.com/termux/proot-distro/releases/download/v4.28.0/rocky-${ARCH}-pd-v4.28.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      mkdir $ROOTFS_DIR/etc/profile.d/ -p
+      
+      wget -O $ROOTFS_DIR/home/container/installer.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
+      wget -O $ROOTFS_DIR/home/container/.bashrc \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
+      wget -O $ROOTFS_DIR/home/container/style.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      ;;
+
+    5)
+      wget --no-hsts -O /tmp/rootfs.tar.gz \
+      "https://github.com/termux/proot-distro/releases/download/v4.21.0/opensuse-${ARCH}-pd-v4.21.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      mkdir $ROOTFS_DIR/etc/profile.d/ -p
+      
+      wget -O $ROOTFS_DIR/home/container/installer.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
+      wget -O $ROOTFS_DIR/home/container/.bashrc \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
+      wget -O $ROOTFS_DIR/home/container/style.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
       ;;
 
     *)
