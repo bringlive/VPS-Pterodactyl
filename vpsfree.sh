@@ -6,9 +6,9 @@ RED='\033[0;31m'
 echo "
 #######################################################################################
 #
-#                                  VPSFREE.ES SCRIPTS
+#                                  VPSFREE SCRIPTS
 #
-#                           Copyright (C) 2022 - 2023, VPSFREE.ES
+#                           Copyright (C) 2025 - 2100, BringLive
 #
 #
 #######################################################################################"
@@ -92,8 +92,12 @@ echo "6. 17.x"
 echo "7. 18.x"
 echo "8. 19.x"
 echo "9. 20.x"
+echo "10. 21.x"
+echo "11. 22.x"
+echo "12. 23.x"
+echo "13. 24.x"
 
-read -p "Enter your choice (1-9): " choice
+read -p "Enter your choice (1-13): " choice
 
 case $choice in
     1)
@@ -122,6 +126,18 @@ case $choice in
         ;;
     9)
         version="20"
+        ;;
+    10)
+        version="21"
+        ;;
+    11)
+        version="22"
+        ;;
+    12)
+        version="23"
+        ;;
+    13)
+        version="24"
         ;;
     *)
         echo "Invalid choice. Exiting."
