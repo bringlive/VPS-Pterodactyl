@@ -1,11 +1,16 @@
-# FREE VPS Pterodactyl [ E . G . G ] 
+# FREE VPS Pterodactyl
 ---------------------
-# [ UBUNTU & DEBIAN & Alphine ] 💚
-- Centos Soon !
+# List
+- Debian
+- Ubuntu
+- Alpine
+- Rocky
+- OpenSuse
 ---------------------
 # 🔶 Installion
 ---------------------
-- Click On Nests > Import EGG /  and add nexus-vps.json
+- Run the script with: bash vpsfree.sh or ./vpsfree.sh
+- Choose your favours
 - Create a server with the EGG!
 ---------------------
 # Here ya go, Done! 
@@ -13,3 +18,4 @@
 # ✨ Credits
 - dxomg / DC: dxomg
 - JOO / DC: j6_o
+- abdalla435
