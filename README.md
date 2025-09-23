@@ -6,6 +6,7 @@
 - Alpine
 - Rocky
 - OpenSuse
+- CentOS
 ---------------------
 # 🔶 Installion
 ---------------------
