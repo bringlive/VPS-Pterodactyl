@@ -32,7 +32,7 @@ echo "##########################################################################
 echo "#"
 echo "#                                    > ApexCloud VPS <"
 echo "#"
-echo "#                           Copyright (C) 2022 - 2023, Apex.Cloud"
+echo "#                           Copyright (C) 2022 - 2100, YourCloud"
 echo "#"
 echo "#"
 echo "#######################################################################################"
@@ -48,7 +48,7 @@ echo "##########################################################################
 
     0)
       wget --no-hsts -O /tmp/rootfs.tar.xz \
-      "https://github.com/termux/proot-distro/releases/download/v3.10.0/debian-${ARCH}-pd-v3.10.0.tar.xz"
+      "https://github.com/termux/proot-distro/releases/download/v4.26.0/debian-trixie-${ARCH}-pd-v4.26.0.tar.xz"
       apt download xz-utils
       deb_file=$(find "$ROOTFS_DIR" -name "*.deb" -type f)
       dpkg -x "$deb_file" ~/.local/
@@ -66,7 +66,7 @@ echo "##########################################################################
 
     1)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/ubuntu-base-20.04.4-base-${ARCH_ALT}.tar.gz"
+      "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04.3/release/ubuntu-base-24.04.3-base-${ARCH_ALT}.tar.gz"
       tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/home/container/ -p
 
@@ -80,7 +80,7 @@ echo "##########################################################################
 
     2)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-minirootfs-3.18.3-${ARCH}.tar.gz"
+      "https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-minirootfs-3.18.12-${ARCH}.tar.gz"
       tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/etc/profile.d/ -p
       
