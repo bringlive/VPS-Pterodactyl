@@ -42,10 +42,11 @@ echo "##########################################################################
   echo "* [1] Ubuntu"
   echo "* [2] Alpine"
   echo "* [3] Fedora"
-  echo "* [4] Rocky"
+  echo "* [4] RockyLinux"
   echo "* [5] OpenSuse"
+  echo "* [6] CentOS"
 
-  read -p "Enter OS (0-5): " input
+  read -p "Enter OS (0-6): " input
 
   case $input in
 
@@ -131,6 +132,20 @@ echo "##########################################################################
       
       wget -O $ROOTFS_DIR/home/container/installer.sh \
       "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
+      wget -O $ROOTFS_DIR/home/container/.bashrc \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
+      wget -O $ROOTFS_DIR/home/container/style.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      ;;
+
+    6)
+      wget --no-hsts -O /tmp/rootfs.tar.xz \
+      "https://centos.mirror.serveriai.lt/altarch/7.4.1708/isos/aarch64/CentOS-7-aarch64-rootfs-7.4.1708.tar.xz"
+      tar -xJf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
+      mkdir $ROOTFS_DIR/home/container/ -p
+
+      wget -O $ROOTFS_DIR/home/container/installer.sh \
+      "https://github.com/bringlive/VPS-Pterodactyl/main/private.sh"
       wget -O $ROOTFS_DIR/home/container/.bashrc \
       "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
       wget -O $ROOTFS_DIR/home/container/style.sh \
