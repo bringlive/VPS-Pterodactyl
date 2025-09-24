@@ -192,8 +192,19 @@ fi
 
 # This command starts PRoot and binds several important directories
 # from the host file system to our special root file system.
+#"$ROOTFS_DIR/usr/local/bin/proot" \
+#--rootfs="${ROOTFS_DIR}" \
+#-0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
+#/bin/sh
+
+# Determine whether to use bash or sh
+SHELL_CMD="/bin/bash"
+if [ ! -f "$ROOTFS_DIR/bin/bash" ]; then
+  SHELL_CMD="/bin/sh"
+fi
+
+# Start the PRoot environment
 "$ROOTFS_DIR/usr/local/bin/proot" \
 --rootfs="${ROOTFS_DIR}" \
 -0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
-/bin/sh
-
+"$SHELL_CMD"
