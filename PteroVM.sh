@@ -92,35 +92,30 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
   esac
 
   # Post-installation setup for all OSes
-  mkdir -p $ROOTFS_DIR/home/container/
+  mkdir -p "$ROOTFS_DIR/home/container/"
 
-  wget --no-hsts -O $ROOTFS_DIR/home/container/installer.sh \
+  wget --no-hsts -O "$ROOTFS_DIR/home/container/installer.sh" \
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/private.sh"
-  wget --no-hsts -O $ROOTFS_DIR/home/container/.bashrc \
+  wget --no-hsts -O "$ROOTFS_DIR/home/container/.bashrc" \
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/.bashrc"
-  wget --no-hsts -O $ROOTFS_DIR/home/container/style.sh \
+  wget --no-hsts -O "$ROOTFS_DIR/home/container/style.sh" \
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/style.sh"
 
-  # --- FIX STARTS HERE ---
+  # --- NEW FIXES HERE ---
 
-  # Ensure /root directory exists in rootfs
+  # Ensure /root directory exists
   if [ ! -d "$ROOTFS_DIR/root" ]; then
-    echo "Creating missing /root directory in rootfs..."
     mkdir -p "$ROOTFS_DIR/root"
   fi
 
-  # Ensure /bin/sh exists, if not but /bin/bash exists, create symlink
-  if [ ! -x "$ROOTFS_DIR/bin/sh" ]; then
-    if [ -x "$ROOTFS_DIR/bin/bash" ]; then
-      echo "Creating /bin/sh symlink to /bin/bash..."
-      ln -sf /bin/bash "$ROOTFS_DIR/bin/sh"
-    else
-      echo "Error: No shell found in rootfs (/bin/sh or /bin/bash missing)!"
-      exit 1
-    fi
+  # Ensure /bin/bash or /bin/sh exists and link if missing
+  if [ ! -x "$ROOTFS_DIR/bin/bash" ] && [ ! -x "$ROOTFS_DIR/bin/sh" ]; then
+    echo "Error: No /bin/bash or /bin/sh shell found in rootfs. Exiting."
+    exit 1
+  elif [ ! -x "$ROOTFS_DIR/bin/sh" ]; then
+    # If bash exists but sh doesn't, create symlink
+    ln -sf /bin/bash "$ROOTFS_DIR/bin/sh"
   fi
-
-  # --- FIX ENDS HERE ---
 
   # Install proot
   mkdir -p "$ROOTFS_DIR/usr/local/bin"
@@ -137,19 +132,24 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
 fi
 
 ###########################
-# Start PRoot environment
+# Set SHELL_CMD and PATH for proot environment
 ###########################
-
-# Set default PATH if empty
-if [ -z "$PATH" ]; then
-  export PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+SHELL_CMD="/bin/bash"
+if [ ! -x "$ROOTFS_DIR/bin/bash" ] && [ -x "$ROOTFS_DIR/bin/sh" ]; then
+  SHELL_CMD="/bin/sh"
 fi
 
+# Setting PATH explicitly inside proot environment
+PROOT_ENV_PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+###########################
+# Start PRoot environment
+###########################
 "$ROOTFS_DIR/usr/local/bin/proot" \
   --rootfs="${ROOTFS_DIR}" \
   -0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
-  /bin/bash -c "\
-    export PATH=/bin:/usr/bin:/sbin:/usr/sbin; \
+  "$SHELL_CMD" -c "\
+    export PATH=$PROOT_ENV_PATH; \
     set -e; \
     echo 'Inside container: preparing environment'; \
     apt update -y || true; \
