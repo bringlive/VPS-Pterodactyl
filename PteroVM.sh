@@ -4,19 +4,11 @@
 # Linux Installation #
 #############################
 
-# Define the root directory to /home/container.
-# We can only write in /home/container and /tmp in the container.
 ROOTFS_DIR=/home/container
+export PATH=$PATH:$HOME/.local/usr/bin
+PROOT_VERSION="5.3.0"
 
-export PATH=$PATH:~/.local/usr/bin
-
-PROOT_VERSION="5.3.0" # Some releases do not have static builds attached.
-
-# Detect the machine architecture.
 ARCH=$(uname -m)
-
-# Check machine architecture to make sure it is supported.
-# If not, we exit with a non-zero status code.
 if [ "$ARCH" = "x86_64" ]; then
   ARCH_ALT=amd64
 elif [ "$ARCH" = "aarch64" ]; then
@@ -26,20 +18,16 @@ else
   exit 1
 fi
 
-# Argument passed: 1 = LXDE, 2 = PufferPanel
 OPTION="$1"
 
-# Download & decompress the Linux root file system if not already installed.
 if [ ! -e "$ROOTFS_DIR/.installed" ]; then
-echo "#######################################################################################"
-echo "#"
-echo "#                                    > Nekopoi <"
-echo "#"
-echo "#                           Copyright (C) 2022 - 2100, BringLive"
-echo "#"
-echo "#"
-echo "#######################################################################################"
-
+  echo "#######################################################################################"
+  echo "#"
+  echo "#                                    > Nekopoi <"
+  echo "#"
+  echo "#                           Copyright (C) 2022 - 2100, BringLive"
+  echo "#"
+  echo "#######################################################################################"
   echo ""
   echo "* [0] Debian"
   echo "* [1] Ubuntu"
@@ -51,107 +39,50 @@ echo "##########################################################################
   read -p "Enter OS (0-6): " input
 
   case $input in
-
     0)
       wget --no-hsts -O /tmp/rootfs.tar.xz \
-      "https://github.com/termux/proot-distro/releases/download/v4.26.0/debian-trixie-${ARCH}-pd-v4.26.0.tar.xz"
-      apt download xz-utils
-      deb_file=$(find "$ROOTFS_DIR" -name "*.deb" -type f)
-      dpkg -x "$deb_file" ~/.local/
-      rm "$deb_file"
-      tar -xzf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/home/container/ -p
-
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+        "https://github.com/termux/proot-distro/releases/download/v4.26.0/debian-trixie-${ARCH}-pd-v4.26.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
       ;;
 
     1)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04.3/release/ubuntu-base-24.04.3-base-${ARCH_ALT}.tar.gz"
+        "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04.3/release/ubuntu-base-24.04.3-base-${ARCH_ALT}.tar.gz"
       tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/home/container/ -p
-
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
       ;;
 
     2)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-minirootfs-3.18.12-${ARCH}.tar.gz"
+        "https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/${ARCH}/alpine-minirootfs-3.18.12-${ARCH}.tar.gz"
       tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/etc/profile.d/ -p
-      
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      mkdir -p $ROOTFS_DIR/etc/profile.d/
       ;;
 
     3)
-      wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "https://github.com/termux/proot-distro/releases/download/v4.27.0/fedora-${ARCH}-pd-v4.27.0.tar.xz"
-      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/etc/profile.d/ -p
-      
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      wget --no-hsts -O /tmp/rootfs.tar.xz \
+        "https://github.com/termux/proot-distro/releases/download/v4.27.0/fedora-${ARCH}-pd-v4.27.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
+      mkdir -p $ROOTFS_DIR/etc/profile.d/
       ;;
 
     4)
-      wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "https://github.com/termux/proot-distro/releases/download/v4.28.0/rocky-${ARCH}-pd-v4.28.0.tar.xz"
-      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/etc/profile.d/ -p
-      
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      wget --no-hsts -O /tmp/rootfs.tar.xz \
+        "https://github.com/termux/proot-distro/releases/download/v4.28.0/rocky-${ARCH}-pd-v4.28.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
+      mkdir -p $ROOTFS_DIR/etc/profile.d/
       ;;
 
     5)
-      wget --no-hsts -O /tmp/rootfs.tar.gz \
-      "https://github.com/termux/proot-distro/releases/download/v4.21.0/opensuse-${ARCH}-pd-v4.21.0.tar.xz"
-      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/etc/profile.d/ -p
-      
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+      wget --no-hsts -O /tmp/rootfs.tar.xz \
+        "https://github.com/termux/proot-distro/releases/download/v4.21.0/opensuse-${ARCH}-pd-v4.21.0.tar.xz"
+      tar -xf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
+      mkdir -p $ROOTFS_DIR/etc/profile.d/
       ;;
 
     6)
       wget --no-hsts -O /tmp/rootfs.tar.xz \
-      "https://centos.mirror.serveriai.lt/altarch/7.4.1708/isos/aarch64/CentOS-7-aarch64-rootfs-7.4.1708.tar.xz"
-      tar -xzf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
-      mkdir $ROOTFS_DIR/home/container/ -p
-
-      wget -O $ROOTFS_DIR/home/container/installer.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/main/private.sh"
-      wget -O $ROOTFS_DIR/home/container/.bashrc \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/.bashrc"
-      wget -O $ROOTFS_DIR/home/container/style.sh \
-      "https://github.com/bringlive/VPS-Pterodactyl/raw/main/style.sh"
+        "https://centos.mirror.serveriai.lt/altarch/7.4.1708/isos/aarch64/CentOS-7-aarch64-rootfs-7.4.1708.tar.xz"
+      tar -xf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
       ;;
 
     *)
@@ -159,53 +90,38 @@ echo "##########################################################################
       exit 1
       ;;
   esac
+
+  # Post-installation setup for all OSes
+  mkdir -p $ROOTFS_DIR/home/container/
+
+  wget --no-hsts -O $ROOTFS_DIR/home/container/installer.sh \
+    "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/private.sh"
+  wget --no-hsts -O $ROOTFS_DIR/home/container/.bashrc \
+    "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/.bashrc"
+  wget --no-hsts -O $ROOTFS_DIR/home/container/style.sh \
+    "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/style.sh"
+
+  # Install proot
+  mkdir -p "$ROOTFS_DIR/usr/local/bin"
+  wget --no-hsts -O "$ROOTFS_DIR/usr/local/bin/proot" \
+    "https://github.com/proot-me/proot/releases/download/v${PROOT_VERSION}/proot-v${PROOT_VERSION}-${ARCH}-static"
+  chmod 755 "$ROOTFS_DIR/usr/local/bin/proot"
+
+  # DNS Resolver
+  printf "nameserver 1.1.1.1\nnameserver 1.0.0.1" > "${ROOTFS_DIR}/etc/resolv.conf"
+
+  # Clean up
+  rm -rf /tmp/rootfs.tar.* /tmp/*.deb
+  touch "$ROOTFS_DIR/.installed"
 fi
-
-################################
-# Package Installation & Setup #
-#################################
-
-# Download static APK-Tools temporarily because minirootfs does not come with APK pre-installed.
-if [ ! -e "$ROOTFS_DIR/.installed" ]; then
-    # Download the packages from their sources
-    mkdir -p "$ROOTFS_DIR/usr/local/bin"
-    wget --no-hsts -O "$ROOTFS_DIR/usr/local/bin/proot" "https://github.com/proot-me/proot/releases/download/v${PROOT_VERSION}/proot-v${PROOT_VERSION}-${ARCH}-static"
-    # Make PRoot executable.
-    chmod 755 "$ROOTFS_DIR/usr/local/bin/proot"
-fi
-
-# Clean-up after installation complete & finish up.
-if [ ! -e "$ROOTFS_DIR/.installed" ]; then
-    # Add DNS Resolver nameservers to resolv.conf.
-    printf "nameserver 1.1.1.1\nnameserver 1.0.0.1" > "${ROOTFS_DIR}/etc/resolv.conf"
-    # Wipe the files we downloaded into /tmp previously.
-    rm -rf /tmp/rootfs.tar.xz /tmp/sbin
-    # Create .installed to later check whether Alpine is installed.
-    touch "$ROOTFS_DIR/.installed"
-fi
-
-# Print some useful information to the terminal before entering PRoot.
-# This is to introduce the user with the various Alpine Linux commands.
-
 
 ###########################
 # Start PRoot environment #
 ###########################
 
-# This command starts PRoot and binds several important directories
-# from the host file system to our special root file system.
-#"$ROOTFS_DIR/usr/local/bin/proot" \
-#--rootfs="${ROOTFS_DIR}" \
-#-0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
-#/bin/sh
-
-# Determine whether to use bash or sh
 SHELL_CMD="/bin/bash"
-if [ ! -f "$ROOTFS_DIR/bin/bash" ]; then
-  SHELL_CMD="/bin/sh"
-fi
+[ ! -f "$ROOTFS_DIR/bin/bash" ] && SHELL_CMD="/bin/sh"
 
-# Start the PRoot environment
 "$ROOTFS_DIR/usr/local/bin/proot" \
   --rootfs="${ROOTFS_DIR}" \
   -0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
@@ -218,9 +134,7 @@ fi
       echo 'Installing LXDE + XRDP'; \
       apt install -y lxde xrdp; \
       echo 'lxsession -s LXDE -e LXDE' >> /etc/xrdp/startwm.sh; \
-      echo 'Enter RDP port (default 3389):'; \
-      read port; \
-      port=\${port:-3389}; \
+      echo 'Enter RDP port (default 3389):'; read port; port=\${port:-3389}; \
       sed -i \"s/port=3389/port=\$port/g\" /etc/xrdp/xrdp.ini; \
       systemctl restart xrdp; \
       echo \"XRDP started on port \$port\"; \
@@ -238,9 +152,8 @@ fi
         sleep 1; \
       done; \
       if [ -f /etc/pufferpanel/config.json ]; then \
-        echo 'Enter PufferPanel Port (default 8080):'; \
-        read pp; pp=\${pp:-8080}; \
-        sed -i \\\"s/\\\"host\\\": \\\"0.0.0.0:8080\\\"/\\\"host\\\": \\\"0.0.0.0:\$pp\\\"/g\\\" /etc/pufferpanel/config.json; \
+        echo 'Enter PufferPanel Port (default 8080):'; read pp; pp=\${pp:-8080}; \
+        sed -i \"s/\\\"host\\\": \\\"0.0.0.0:8080\\\"/\\\"host\\\": \\\"0.0.0.0:\$pp\\\"/g\" /etc/pufferpanel/config.json; \
         echo 'Enter admin username:'; read au; \
         echo 'Enter admin password:'; read ap; \
         echo 'Enter admin email:'; read ae; \
@@ -252,5 +165,3 @@ fi
       fi; \
     else \
       echo 'No valid option passed. Exiting.'; \
-    fi; \
-    exec /bin/bash"  # after tasks, drop you to a shell
