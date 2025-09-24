@@ -163,5 +163,8 @@ SHELL_CMD="/bin/bash"
       else \
         echo 'config.json not found — skipping port set'; \
       fi; \
-    else \
+        else \
       echo 'No valid option passed. Exiting.'; \
+    fi; \
+    exec /bin/bash"
+
