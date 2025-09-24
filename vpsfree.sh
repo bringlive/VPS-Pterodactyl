@@ -27,12 +27,12 @@ read -rp "Enter option number: " option
 if [ "$option" -eq 1 ]; then
     clear
     echo -e "${YELLOW}Proceeding with LXDE installation via PteroVM...${NC}"
-    bash pterovm.sh 1
+    bash PteroVM.sh 1
 
 elif [ "$option" -eq 2 ]; then
     clear
     echo -e "${YELLOW}Proceeding with PufferPanel installation via PteroVM...${NC}"
-    bash pterovm.sh 2
+    bash PteroVM.sh 2
 
 elif [ "$option" -eq 3 ]; then
     clear
