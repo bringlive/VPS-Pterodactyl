@@ -24,6 +24,9 @@ echo "4) Install Nodejs"
 
 read -rp "Enter option number: " option
 
+# Make sure PteroVM.sh is executable
+chmod +x ./PteroVM.sh
+
 if [ "$option" -eq 1 ]; then
     clear
     echo -e "${YELLOW}Proceeding with LXDE installation via PteroVM...${NC}"
