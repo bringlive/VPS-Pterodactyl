@@ -152,19 +152,18 @@ SHELL_CMD="/bin/bash"
         sleep 1; \
       done; \
       if [ -f /etc/pufferpanel/config.json ]; then \
-        echo 'Enter PufferPanel Port (default 8080):'; read pp; pp=\${pp:-8080}; \
-        sed -i \\\\"s/\\\\"host\\\\": \\\\"0.0.0.0:8080\\\\"/\\\\"host\\\\": \\\\"0.0.0.0:\$pp\\\\"/g\" /etc/pufferpanel/config.json; \
-        echo 'Enter admin username:'; read au; \
-        echo 'Enter admin password:'; read ap; \
-        echo 'Enter admin email:'; read ae; \
-        pufferpanel user add --name \\\"$au\\\" --password \\\"$ap\\\" --email \\\"$ae\\\" --admin; \
-        systemctl restart pufferpanel; \
-        echo \\\"PufferPanel running on port \$pp\\\"; \
-      else \
-        echo 'config.json not found — skipping port set'; \
-      fi; \
-        else \
-      echo 'No valid option passed. Exiting.'; \
-    fi; \
-    exec /bin/bash"
-
+  echo 'Enter PufferPanel Port (default 8080):'; read pp; pp=\${pp:-8080}; \
+  sed -i \\\\"s/\\\\"host\\\\": \\\\"0.0.0.0:8080\\\\"/\\\\"host\\\\": \\\\"0.0.0.0:\$pp\\\\"/g\" /etc/pufferpanel/config.json; \
+  echo 'Enter admin username:'; read au; \
+  echo 'Enter admin password:'; read ap; \
+  echo 'Enter admin email:'; read ae; \
+  pufferpanel user add --name \\\"\$au\\\" --password \\\"\$ap\\\" --email \\\"\$ae\\\" --admin; \
+  systemctl restart pufferpanel; \
+  echo \\\"PufferPanel running on port \$pp\\\"; \
+else \
+  echo 'config.json not found — skipping port set'; \
+fi; \       # closes inner if
+else \       # outer else, corresponding to if [ "$OPTION" = "2" ]
+  echo 'No valid option passed. Exiting.'; \
+fi; \       # closes outer if
+exec /bin/bash"
