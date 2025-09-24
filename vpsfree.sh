@@ -7,6 +7,13 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Check if PteroVM.sh exists, if not download it and make executable
+if [ ! -f ./PteroVM.sh ]; then
+    echo "Downloading PteroVM.sh..."
+    curl -s -O https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/PteroVM.sh
+    chmod +x ./PteroVM.sh
+fi
+
 echo "
 #######################################################################################
 #
