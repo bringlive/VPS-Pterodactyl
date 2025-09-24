@@ -1,5 +1,6 @@
 #!/bin/bash
-clear
+# Set working directory
+cd /home/container || exit 1
 
 # Colors
 GREEN='\033[0;32m'
@@ -7,11 +8,33 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Check if PteroVM.sh exists, if not download it and make executable
-if [ ! -f ./PteroVM.sh ]; then
-    echo "Downloading PteroVM.sh..."
-    curl -s -O https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/PteroVM.sh
-    chmod +x ./PteroVM.sh
+REPO_URL="https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main"
+
+echo -e "${YELLOW}[*] Starting VPS-Free Setup via PteroVM...${NC}"
+
+# Files to auto-download
+FILES=(
+  ".bashrc"
+  "PteroVM.sh"
+  "README.md"
+  "nexus-vps.json"
+  "private.sh"
+  "private2.sh"
+  "style.sh"
+)
+
+# Download all necessary files
+for file in "${FILES[@]}"; do
+  echo -e "${YELLOW}[*] Downloading: $file${NC}"
+  curl -s -o "$file" "$REPO_URL/$file"
+  # Make scripts executable if applicable
+  [[ "$file" == *.sh ]] && chmod +x "$file"
+done
+
+# Confirm PteroVM.sh exists
+if [ ! -f "./PteroVM.sh" ]; then
+    echo -e "${RED}[!] Failed to download PteroVM.sh. Exiting.${NC}"
+    exit 1
 fi
 
 echo "
