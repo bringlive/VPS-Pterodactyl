@@ -91,9 +91,6 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
       ;;
   esac
 
-  # Fix missing /root directory
-  mkdir -p "$ROOTFS_DIR/root"
-
   # Post-installation setup for all OSes
   mkdir -p $ROOTFS_DIR/home/container/
 
@@ -103,6 +100,27 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/.bashrc"
   wget --no-hsts -O $ROOTFS_DIR/home/container/style.sh \
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/style.sh"
+
+  # --- FIX STARTS HERE ---
+
+  # Ensure /root directory exists in rootfs
+  if [ ! -d "$ROOTFS_DIR/root" ]; then
+    echo "Creating missing /root directory in rootfs..."
+    mkdir -p "$ROOTFS_DIR/root"
+  fi
+
+  # Ensure /bin/sh exists, if not but /bin/bash exists, create symlink
+  if [ ! -x "$ROOTFS_DIR/bin/sh" ]; then
+    if [ -x "$ROOTFS_DIR/bin/bash" ]; then
+      echo "Creating /bin/sh symlink to /bin/bash..."
+      ln -sf /bin/bash "$ROOTFS_DIR/bin/sh"
+    else
+      echo "Error: No shell found in rootfs (/bin/sh or /bin/bash missing)!"
+      exit 1
+    fi
+  fi
+
+  # --- FIX ENDS HERE ---
 
   # Install proot
   mkdir -p "$ROOTFS_DIR/usr/local/bin"
@@ -119,20 +137,19 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
 fi
 
 ###########################
-# Define shell to use
-###########################
-SHELL_CMD="/bin/bash"
-if [ ! -f "$ROOTFS_DIR/bin/bash" ]; then
-  SHELL_CMD="/bin/sh"
-fi
-
-###########################
 # Start PRoot environment
 ###########################
+
+# Set default PATH if empty
+if [ -z "$PATH" ]; then
+  export PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+fi
+
 "$ROOTFS_DIR/usr/local/bin/proot" \
   --rootfs="${ROOTFS_DIR}" \
   -0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
-  "$SHELL_CMD" -c "\
+  /bin/bash -c "\
+    export PATH=/bin:/usr/bin:/sbin:/usr/sbin; \
     set -e; \
     echo 'Inside container: preparing environment'; \
     apt update -y || true; \
