@@ -91,6 +91,9 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
       ;;
   esac
 
+  # Fix missing /root directory
+  mkdir -p "$ROOTFS_DIR/root"
+
   # Post-installation setup for all OSes
   mkdir -p $ROOTFS_DIR/home/container/
 
@@ -100,9 +103,6 @@ if [ ! -e "$ROOTFS_DIR/.installed" ]; then
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/.bashrc"
   wget --no-hsts -O $ROOTFS_DIR/home/container/style.sh \
     "https://raw.githubusercontent.com/bringlive/VPS-Pterodactyl/main/style.sh"
-
-  # Fix missing /root directory
-  mkdir -p "$ROOTFS_DIR/root"
 
   # Install proot
   mkdir -p "$ROOTFS_DIR/usr/local/bin"
