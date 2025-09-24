@@ -125,20 +125,20 @@ SHELL_CMD="/bin/bash"
 "$ROOTFS_DIR/usr/local/bin/proot" \
   --rootfs="${ROOTFS_DIR}" \
   -0 -w "/root" -b /dev -b /sys -b /proc -b /etc/resolv.conf --kill-on-exit \
-  "$SHELL_CMD" -c "\
+  "$SHELL_CMD" -c "\\\
     set -e; \
     echo 'Inside container: preparing environment'; \
     apt update -y || true; \
     apt upgrade -y || true; \
-    if [ \"$OPTION\" = \"1\" ]; then \
+    if [ \\\"$OPTION\\\" = \\\"1\\\" ]; then \
       echo 'Installing LXDE + XRDP'; \
       apt install -y lxde xrdp; \
       echo 'lxsession -s LXDE -e LXDE' >> /etc/xrdp/startwm.sh; \
       echo 'Enter RDP port (default 3389):'; read port; port=\${port:-3389}; \
-      sed -i \"s/port=3389/port=\$port/g\" /etc/xrdp/xrdp.ini; \
+      sed -i \\\"s/port=3389/port=\$port/g\\\" /etc/xrdp/xrdp.ini; \
       systemctl restart xrdp; \
-      echo \"XRDP started on port \$port\"; \
-    elif [ \"$OPTION\" = \"2\" ]; then \
+      echo \\\"XRDP started on port \$port\\\"; \
+    elif [ \\\"$OPTION\\\" = \\\"2\\\" ]; then \
       echo 'Installing PufferPanel'; \
       apt install -y curl wget git python3; \
       curl -s https://packagecloud.io/install/repositories/pufferpanel/pufferpanel/script.deb.sh | bash; \
@@ -153,13 +153,13 @@ SHELL_CMD="/bin/bash"
       done; \
       if [ -f /etc/pufferpanel/config.json ]; then \
         echo 'Enter PufferPanel Port (default 8080):'; read pp; pp=\${pp:-8080}; \
-        sed -i \"s/\\\"host\\\": \\\"0.0.0.0:8080\\\"/\\\"host\\\": \\\"0.0.0.0:\$pp\\\"/g\" /etc/pufferpanel/config.json; \
+        sed -i \\\\"s/\\\\"host\\\\": \\\\"0.0.0.0:8080\\\\"/\\\\"host\\\\": \\\\"0.0.0.0:\$pp\\\\"/g\" /etc/pufferpanel/config.json; \
         echo 'Enter admin username:'; read au; \
         echo 'Enter admin password:'; read ap; \
         echo 'Enter admin email:'; read ae; \
-        pufferpanel user add --name \"\$au\" --password \"\$ap\" --email \"\$ae\" --admin; \
+        pufferpanel user add --name \\\"$au\\\" --password \\\"$ap\\\" --email \\\"$ae\\\" --admin; \
         systemctl restart pufferpanel; \
-        echo \"PufferPanel running on port \$pp\"; \
+        echo \\\"PufferPanel running on port \$pp\\\"; \
       else \
         echo 'config.json not found — skipping port set'; \
       fi; \
