@@ -59,7 +59,7 @@ echo "##########################################################################
       deb_file=$(find "$ROOTFS_DIR" -name "*.deb" -type f)
       dpkg -x "$deb_file" ~/.local/
       rm "$deb_file"
-      tar -xJf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/home/container/ -p
 
       wget -O $ROOTFS_DIR/home/container/installer.sh \
@@ -73,7 +73,7 @@ echo "##########################################################################
     1)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
       "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04.3/release/ubuntu-base-24.04.3-base-${ARCH_ALT}.tar.gz"
-      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/home/container/ -p
 
       wget -O $ROOTFS_DIR/home/container/installer.sh \
@@ -87,7 +87,7 @@ echo "##########################################################################
     2)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
       "https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-minirootfs-3.18.12-${ARCH}.tar.gz"
-      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/etc/profile.d/ -p
       
       wget -O $ROOTFS_DIR/home/container/installer.sh \
@@ -101,7 +101,7 @@ echo "##########################################################################
     3)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
       "https://github.com/termux/proot-distro/releases/download/v4.27.0/fedora-${ARCH}-pd-v4.27.0.tar.xz"
-      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/etc/profile.d/ -p
       
       wget -O $ROOTFS_DIR/home/container/installer.sh \
@@ -115,7 +115,7 @@ echo "##########################################################################
     4)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
       "https://github.com/termux/proot-distro/releases/download/v4.28.0/rocky-${ARCH}-pd-v4.28.0.tar.xz"
-      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/etc/profile.d/ -p
       
       wget -O $ROOTFS_DIR/home/container/installer.sh \
@@ -129,7 +129,7 @@ echo "##########################################################################
     5)
       wget --no-hsts -O /tmp/rootfs.tar.gz \
       "https://github.com/termux/proot-distro/releases/download/v4.21.0/opensuse-${ARCH}-pd-v4.21.0.tar.xz"
-      tar -xf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.gz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/etc/profile.d/ -p
       
       wget -O $ROOTFS_DIR/home/container/installer.sh \
@@ -143,7 +143,7 @@ echo "##########################################################################
     6)
       wget --no-hsts -O /tmp/rootfs.tar.xz \
       "https://centos.mirror.serveriai.lt/altarch/7.4.1708/isos/aarch64/CentOS-7-aarch64-rootfs-7.4.1708.tar.xz"
-      tar -xJf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
+      tar -xzf /tmp/rootfs.tar.xz -C "$ROOTFS_DIR"
       mkdir $ROOTFS_DIR/home/container/ -p
 
       wget -O $ROOTFS_DIR/home/container/installer.sh \
